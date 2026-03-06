@@ -26,9 +26,7 @@ public class CreateServiceUseCase
         Optional<Service> existingService = repository.findByName(name);
 
         if (existingService.isPresent()) 
-        {
             throw new IllegalArgumentException("There is already a service registered with this name in the catalog.");
-        }
 
         Service service = new Service(name, description, price);
         

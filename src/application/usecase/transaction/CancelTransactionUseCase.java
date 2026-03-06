@@ -16,9 +16,7 @@ public class CancelTransactionUseCase
     public void execute(Long transactionId) 
     {
         if (transactionId == null) 
-        {
             throw new IllegalArgumentException("The transaction ID is required.");
-        }
 
         Transaction transaction = repository.findById(transactionId)
                 .orElseThrow(() -> new IllegalArgumentException("Transaction not found."));

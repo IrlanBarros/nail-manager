@@ -28,9 +28,8 @@ public class DeleteServiceUseCase
                 .anyMatch(app -> (app.getStatus() == AppointmentStatus.SCHEDULED || app.getStatus() == AppointmentStatus.IN_PROGRESS)
                               && app.getServices().contains(service));
 
-        if (isBeingUsed) {
+        if (isBeingUsed) 
             throw new IllegalStateException("Is impossible to deactivate a service that has pending or ongoing appointments.");
-        }
 
         service.deactivate();
 

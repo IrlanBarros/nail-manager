@@ -25,9 +25,7 @@ public class LoginUseCase
                 .orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
 
         if (!hasher.check(rawPassword, user.getPasswordHash())) 
-        {
             throw new IllegalArgumentException("Invalid email or password.");
-        }
 
         return user;
     }

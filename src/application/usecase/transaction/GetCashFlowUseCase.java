@@ -21,14 +21,10 @@ public class GetCashFlowUseCase
     public CashFlowReport execute(LocalDateTime startDate, LocalDateTime endDate) 
     {
         if (startDate == null || endDate == null) 
-        {
             throw new IllegalArgumentException("The start and end dates are mandatory.");
-        }
 
         if (startDate.isAfter(endDate)) 
-        {
             throw new IllegalArgumentException("The start date cannot be later than the end date.");
-        }
 
         List<Transaction> allTransactions = repository.findByPeriod(startDate, endDate);
 

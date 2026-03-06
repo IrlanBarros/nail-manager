@@ -24,14 +24,10 @@ public class RegisterUserUseCase
         Email userEmail = new Email(emailText);
 
         if (rawPassword == null || rawPassword.length() < 8) 
-        {
             throw new IllegalArgumentException("Password must be at least 8 characters long.");
-        }
 
         if (repository.findByEmail(userEmail).isPresent()) 
-        {
             throw new IllegalArgumentException("There is already a user registered with this email address.");
-        }
 
         String passwordHash = hasher.hash(rawPassword);
         

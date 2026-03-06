@@ -1,0 +1,52 @@
+.form-container {
+    -fx-background-color: white;
+}
+
+.welcome-label {
+    -fx-font-family: "System";
+    -fx-font-weight: bold;
+    -fx-font-size: 32px;
+    -fx-text-fill: -fx-primary-color;
+}
+
+.instruction-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-secondary-color;
+}
+
+.field-label {
+    -fx-font-family: "System";
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-primary-color;
+}
+
+/* Input Fields */
+.text-input {
+    -fx-background-color: -fx-bg-color;
+    -fx-border-color: #E2E8F0;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-font-size: 14px;
+    -fx-pref-height: 45px;
+}
+
+.text-input:focused {
+    -fx-border-color: -fx-accent-color;
+    -fx-background-color: white;
+}
+
+/* Main Button */
+.login-button {
+    -fx-background-color: -fx-accent-color;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-pref-height: 50px;
+    -fx-cursor: hand;
+}
+
+.login-button:hover {
+    -fx-background-color: #d90429; /* A slightly darker shade of red */
+}

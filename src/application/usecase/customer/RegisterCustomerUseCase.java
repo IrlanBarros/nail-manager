@@ -23,14 +23,10 @@ public class RegisterCustomerUseCase
         Email email = new Email(emailText);
 
         if (repository.findByEmail(email).isPresent()) 
-        {
             throw new IllegalArgumentException("There is already a customer registered with this email address.");
-        }
 
         if (repository.findByPhone(phone).isPresent()) 
-        {
             throw new IllegalArgumentException("There is already a customer registered with this phone number.");
-        }
 
         Customer customer = new Customer(name, phone, email);
 

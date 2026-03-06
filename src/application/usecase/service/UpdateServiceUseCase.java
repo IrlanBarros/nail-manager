@@ -23,9 +23,7 @@ public class UpdateServiceUseCase
                 .orElseThrow(() -> new IllegalArgumentException("Service not found."));
 
         if (!service.isActive()) 
-        {
             throw new IllegalStateException("Is impossible to update an inactive service. Reactivate it first.");
-        }
 
         if (newNameText != null && !newNameText.isBlank()) 
         {

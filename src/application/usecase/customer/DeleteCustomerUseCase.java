@@ -30,9 +30,7 @@ public class DeleteCustomerUseCase
                               || app.getStatus() == AppointmentStatus.IN_PROGRESS);
 
         if (hasPendingAppointments) 
-        {
             throw new IllegalStateException("Is impossible to deactivate a customer who has pending or ongoing appointments.");
-        }
 
         customer.deactivate();
 

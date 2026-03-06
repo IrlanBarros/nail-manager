@@ -35,9 +35,7 @@ public class FinishAppointmentUseCase
         Customer customer = appointment.getCustomer();
         
         if (!customer.isActive()) 
-        {
             throw new IllegalStateException("Is impossible to finalize service for an inactive customer.");
-        }
 
         customer.registerAppointment();
 

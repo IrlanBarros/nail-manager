@@ -1,0 +1,25 @@
+/* Global Color Palette and Styles */
+
+.root {
+    -fx-primary-color: #2B2D42;
+    -fx-secondary-color: #8D99AE;
+    -fx-accent-color: #EF233C;
+    -fx-bg-color: #F4F6F8;
+}
+
+/* Left Side - Branding */
+.sidebar-branding {
+    -fx-background-color: -fx-primary-color;
+}
+
+.title-label {
+    -fx-font-family: "System";
+    -fx-font-weight: bold;
+    -fx-font-size: 48px;
+    -fx-text-fill: white;
+}
+
+.subtitle-label {
+    -fx-font-size: 18px;
+    -fx-text-fill: -fx-secondary-color;
+}

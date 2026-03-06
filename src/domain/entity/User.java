@@ -70,9 +70,7 @@ public class User
     private void validatePassword(String passwordHash) 
     {
         if (passwordHash == null || passwordHash.isBlank()) 
-        {
             throw new IllegalArgumentException("Password cannot be empty.");
-        }
     }
 
     public Long getId() { return id; }
@@ -99,8 +97,5 @@ public class User
     }
 
     @Override
-    public int hashCode() 
-    {
-        return id != null ? id.hashCode() : 0;
-    }
+    public int hashCode() { return id != null ? id.hashCode() : 0; }
 }

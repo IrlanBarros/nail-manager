@@ -57,9 +57,7 @@ public class UpdateAppointmentUseCase
                         .orElseThrow(() -> new IllegalArgumentException("Service not fount: ID - " + sId));
                 
                 if (!service.isActive()) 
-                {
                     throw new IllegalStateException("The service '" + service.getName() + "' is inactive.");
-                }
                 
                 services.add(service);
             }

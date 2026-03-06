@@ -12,14 +12,10 @@ public class LoyaltyDiscountPolicy implements DiscountPolicy
     public BigDecimal calculateDiscount(Customer customer, BigDecimal totalAmount) 
     {
         if (customer == null || totalAmount == null) 
-        {
             throw new IllegalArgumentException("Customer and total amount cannot be null.");
-        }
 
         if (customer.getTotalAppointments() >= MINIMUM_APPOINTMENTS) 
-        {
             return totalAmount.multiply(DISCOUNT_RATE);
-        }
 
         return BigDecimal.ZERO;
     }

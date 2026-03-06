@@ -28,9 +28,10 @@ public class Transaction
         this(null, type, amount, description, appointmentId, LocalDateTime.now(), true, null);
     }
 
-    public Transaction(
-            Long id, TransactionType type, BigDecimal amount, Description description, 
-            Long appointmentId, LocalDateTime date, boolean active, LocalDateTime canceledAt
+    public Transaction
+    (
+        Long id, TransactionType type, BigDecimal amount, Description description, 
+        Long appointmentId, LocalDateTime date, boolean active, LocalDateTime canceledAt
     ) {
         validateTransaction(type, amount, description, date);
 
@@ -47,9 +48,7 @@ public class Transaction
     public void cancel() 
     {
         if (!this.active) 
-        {
             throw new IllegalStateException("This transaction has already been canceled.");
-        }
 
         this.active = false;
         this.canceledAt = LocalDateTime.now();
@@ -61,24 +60,16 @@ public class Transaction
         Description description, LocalDateTime date
     ) {
         if (type == null) 
-        {
             throw new IllegalArgumentException("Transaction type cannot be null.");
-        }
 
         if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) 
-        {
             throw new IllegalArgumentException("The transaction amount must be greater than zero.");
-        }
 
         if (description == null) 
-        {
             throw new IllegalArgumentException("Description cannot be null.");
-        }
 
         if (date == null) 
-        {
             throw new IllegalArgumentException("Transaction date cannot be null.");
-        }
     }
 
     public Long getId() { return id; }

@@ -126,8 +126,5 @@ public class Customer
     }
 
     @Override
-    public int hashCode() 
-    {
-        return id != null ? id.hashCode() : 0;
-    }
+    public int hashCode() { return id != null ? id.hashCode() : 0; }
 }

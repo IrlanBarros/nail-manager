@@ -10,22 +10,15 @@ public class Description
     public Description(String value) 
     {
         if (value == null || value.trim().isEmpty()) 
-        {
             throw new IllegalArgumentException("Description cannot be null.");
-        }
         
         if (value.length() > 500) 
-        {
             throw new IllegalArgumentException("Description cannot exceed 500 characters.");
-        }
 
         this.value = value.trim(); 
     }
 
-    public String getValue() 
-    {
-        return value;
-    }
+    public String getValue() { return value; }
 
     @Override
     public boolean equals(Object o) 

@@ -20,16 +20,23 @@ public class Appointment
     private AppointmentStatus status;
     private Description description;
     private final List<Service> services;
+    private BigDecimal totalPrice;
 
-    public Appointment(Customer customer, LocalDateTime dateTime, Description description) 
-    {
-        this(null, customer, dateTime, AppointmentStatus.SCHEDULED, new ArrayList<>(), description);
+    public Appointment
+    (
+        Customer customer, LocalDateTime dateTime, 
+        Description description
+    ) {
+        this (
+            null, customer, dateTime, AppointmentStatus.SCHEDULED, 
+            new ArrayList<>(), description, BigDecimal.ZERO
+        );
     }
 
     public Appointment
     (
-            Long id, Customer customer, LocalDateTime dateTime,
-            AppointmentStatus status, List<Service> services, Description description
+        Long id, Customer customer, LocalDateTime dateTime, AppointmentStatus status, 
+        List<Service> services, Description description, BigDecimal totalPrice
     ) {
         validateAppointment(customer, status, dateTime);
 
@@ -39,6 +46,7 @@ public class Appointment
         this.status = status;
         this.services = services == null ? new ArrayList<>() : new ArrayList<>(services);
         this.description = description;
+        this.totalPrice = totalPrice;
     }
 
     public void addService(Service service) 
@@ -95,14 +103,10 @@ public class Appointment
     public void reschedule(LocalDateTime newDateTime) 
     {
         if (isFinalized()) 
-        {
             throw new IllegalStateException("Is impossible to reschedule a completed or canceled appointment.");
-        }
 
         if (newDateTime.isBefore(LocalDateTime.now())) 
-        {
             throw new IllegalArgumentException("New appointment date cannot be in the past.");
-        }
 
         this.dateTime = newDateTime;
         
@@ -120,14 +124,10 @@ public class Appointment
     public void updateServices(List<Service> newServices) 
     {
         if (newServices == null || newServices.isEmpty()) 
-        {
             throw new IllegalArgumentException("An appointment must contain at least one service.");
-        }
 
         if (isFinalized()) 
-        {
             throw new IllegalStateException("Is impossible to change services for a completed or canceled order.");
-        }
 
         this.services.clear();
         this.services.addAll(newServices);
@@ -136,9 +136,7 @@ public class Appointment
     public void updateDescription(Description newDescription) 
     {
         if (isFinalized()) 
-        {
             throw new IllegalStateException("Cannot update description of a finished or cancelled appointment.");
-        }
 
         this.description = newDescription; 
     }
@@ -155,6 +153,11 @@ public class Appointment
             throw new IllegalArgumentException("DateTime cannot be null.");
     }
 
+    public void lockFinalPrice(DiscountPolicy discountPolicy) 
+    {
+        this.totalPrice = calculateTotal(discountPolicy);
+    }
+
     public Long getId() { return id; }
 
     public LocalDateTime getDateTime() { return dateTime; }
@@ -166,6 +169,8 @@ public class Appointment
     public List<Service> getServices() { return List.copyOf(services); }
 
     public Optional<Description> getDescription() { return Optional.ofNullable(description); }
+
+    public BigDecimal getTotalPrice() { return this.totalPrice; }
 
     @Override
     public boolean equals(Object o) 
@@ -181,8 +186,5 @@ public class Appointment
     }
 
     @Override
-    public int hashCode() 
-    {
-        return id != null ? id.hashCode() : 0;
-    }
+    public int hashCode() { return id != null ? id.hashCode() : 0; }
 }

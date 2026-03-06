@@ -13,19 +13,15 @@ public class Phone
     public Phone(String number) 
     {
         if (number == null || number.isBlank()) 
-        {
-            throw new IllegalArgumentException("O telefone não pode estar vazio.");
-        }
+            throw new IllegalArgumentException("The phone cannot be empty.");
 
         if (!PATTERN.matcher(number).matches()) 
-        {
-            throw new IllegalArgumentException("Formato de telefone inválido.");
-        }
+            throw new IllegalArgumentException("Invalid phone format.");
 
         this.number = number;
     }
 
-    public String getNumber() { return number; }
+    public String getValue() { return number; }
 
     @Override
     public boolean equals(Object o) 

@@ -19,8 +19,7 @@ public class PBKDF2PasswordHasher implements PasswordHasher
     @Override
     public String hash(String password) 
     {
-        try 
-        {
+        try {
             byte[] salt = new byte[SALT_LENGTH];
             SecureRandom.getInstanceStrong().nextBytes(salt);
 
@@ -37,8 +36,7 @@ public class PBKDF2PasswordHasher implements PasswordHasher
     @Override
     public boolean check(String password, String storedHash) 
     {
-        try 
-        {
+        try {
             String[] parts = storedHash.split(":");
             if (parts.length != 2) return false;
 

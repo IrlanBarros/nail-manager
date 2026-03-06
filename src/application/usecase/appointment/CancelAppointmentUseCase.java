@@ -16,9 +16,7 @@ public class CancelAppointmentUseCase
     public void execute(Long appointmentId) 
     {
         if (appointmentId == null) 
-        {
             throw new IllegalArgumentException("The appointment ID is mandatory.");
-        }
 
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new IllegalArgumentException("Schedule not found."));

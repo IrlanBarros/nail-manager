@@ -22,14 +22,10 @@ public class UpdateCustomerUseCase
                 .orElseThrow(() -> new IllegalArgumentException("Customer not found."));
 
         if (!customer.isActive()) 
-        {
             throw new IllegalStateException("Is impossible to update an inactive customer. Reactivate them first.");
-        }
 
         if (newName != null && !newName.isBlank()) 
-        {
             customer.updateName(new Name(newName));
-        }
 
         if (newEmail != null && !newEmail.isBlank()) 
         {

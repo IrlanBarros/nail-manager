@@ -28,17 +28,13 @@ public class CreateAppointmentUseCase
         String descriptionText
     ) {
         if (dateTime.isBefore(LocalDateTime.now())) 
-        {
             throw new IllegalArgumentException("Is impossible to schedule an appointment for a past date.");
-        }
 
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new IllegalArgumentException("Costumer not found."));
 
         if (!customer.isActive()) 
-        {
             throw new IllegalStateException("Is impossible to schedule services for an inactive customer.");
-        }
 
         Description description = (descriptionText != null) ? new Description(descriptionText) : null;
 

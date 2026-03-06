@@ -38,9 +38,7 @@ public class RegisterTransactionUseCase
                 .orElseThrow(() -> new IllegalArgumentException("Linked appointment not found."));
             
             if (type == TransactionType.EXPENSE) 
-            {
                 throw new IllegalArgumentException("Is not permitted to record an expense linked to a appointment.");
-            }
         }
 
         Transaction transaction = new Transaction(type, amount, description, appointmentId);

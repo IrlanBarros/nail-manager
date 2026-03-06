@@ -34,9 +34,7 @@ public class Service
     public void deactivate() 
     {
         if (!this.active) 
-        {
             throw new IllegalStateException("This service is currently inactive.");
-        }
 
         this.active = false;
     }
@@ -44,9 +42,7 @@ public class Service
     public void reactivate() 
     {
         if (this.active) 
-        {
             throw new IllegalStateException("This service is already active.");
-        }
 
         this.active = true;
     }
@@ -93,17 +89,13 @@ public class Service
     private void validateActiveState() 
     {
         if (!this.active) 
-        {
             throw new IllegalStateException("Cannot modify an inactive service.");
-        }
     }
 
     private void validatePrice(BigDecimal price) 
     {
         if (price == null || price.compareTo(BigDecimal.ZERO) < 0) 
-        {
             throw new IllegalArgumentException("Price cannot be negative.");
-        }
     }
 
     public boolean isActive() { return active; }
@@ -117,7 +109,8 @@ public class Service
     public BigDecimal getPrice() { return price; }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o) 
+    {
         if (this == o) return true;
         if (!(o instanceof Service)) return false;
 
@@ -129,7 +122,5 @@ public class Service
     }
 
     @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
-    }
+    public int hashCode() { return id != null ? id.hashCode() : 0; }
 }

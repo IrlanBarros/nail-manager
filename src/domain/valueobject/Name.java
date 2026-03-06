@@ -13,16 +13,12 @@ public class Name
     public Name(String value) 
     {
         if (value == null || value.isBlank()) 
-        {
-            throw new IllegalArgumentException("O nome não pode estar vazio.");
-        }
+            throw new IllegalArgumentException("The name cannot be empty.");
     
         String trimmedValue = value.trim();
         
         if (!PATTERN.matcher(trimmedValue).matches()) 
-        {
-            throw new IllegalArgumentException("O nome só pode conter letras e espaços, sem números ou caracteres especiais.");
-        }
+            throw new IllegalArgumentException("The name can only contain letters and spaces, without numbers or special characters.");
         
         this.value = trimmedValue;
     }
