@@ -6,10 +6,6 @@ Como este projeto não utiliza gerenciadores de dependências automáticos (como
 
 ---
 
-Como este projeto não utiliza gerenciadores de dependências automáticos (como Maven ou Gradle) e as bibliotecas nativas estão no `.gitignore`, siga este guia para configurar seu ambiente de desenvolvimento.
-
----
-
 ## 🛠️ 1. Pré-requisitos do Sistema
 
 Antes de começar, certifique-se de que seu ambiente possui:
