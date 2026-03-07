@@ -30,7 +30,7 @@ public class Main extends Application {
         
         LoginUseCase loginUseCase = new LoginUseCase(userRepository, passwordHasher);
 
-        SceneManager.changeScreen("/presentation/view/Login.fxml", controllerClass -> {
+        SceneManager.changeScreen("src/presentation/view/Login.fxml", controllerClass -> {
             
             if (controllerClass == LoginController.class) 
             {

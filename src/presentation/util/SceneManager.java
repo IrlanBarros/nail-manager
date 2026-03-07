@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import java.io.File;
 import java.io.IOException;
 
 public class SceneManager 
@@ -20,7 +21,7 @@ public class SceneManager
 
     /**
      * Replace the current screen with a new one, applying Dependency Injection.
-     * * @param fxmlPath File path .fxml (ex: "/presentation/view/Login.fxml")
+     * * @param fxmlPath File path .fxml (ex: "src/presentation/view/Login.fxml" - relative to project root)
      * @param controllerFactory Factory that teaches JavaFX to instantiate the Controller
      */
     public static void changeScreen(String fxmlPath, Callback<Class<?>, Object> controllerFactory) 
@@ -31,7 +32,10 @@ public class SceneManager
         }
 
         try {
-            FXMLLoader loader = new FXMLLoader(SceneManager.class.getResource(fxmlPath));
+            // Use file path relative to project root instead of classpath
+            String projectPath = System.getProperty("user.dir");
+            File fxmlFile = new File(projectPath, fxmlPath);
+            FXMLLoader loader = new FXMLLoader(fxmlFile.toURI().toURL());
 
             if (controllerFactory != null) 
             {
