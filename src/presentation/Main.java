@@ -30,6 +30,9 @@ public class Main extends Application {
         
         LoginUseCase loginUseCase = new LoginUseCase(userRepository, passwordHasher);
 
+        // No seu Main.java, dentro do método start()
+        System.out.println("Caminho do Login: " + SceneManager.class.getResource("/presentation/view/Login.fxml"));
+
         SceneManager.changeScreen("/presentation/view/Login.fxml", controllerClass -> {
             
             if (controllerClass == LoginController.class) 

@@ -30,8 +30,18 @@ public class SceneManager
             throw new IllegalStateException("SceneManager was not initialized with the main Stage.");
         }
 
+        // 1. Resolvemos a URL antes para validar
+        java.net.URL fxmlLocation = SceneManager.class.getResource(fxmlPath);
+
+        // 2. Se for null, o Java não achou o arquivo na pasta compilada!
+        if (fxmlLocation == null) 
+        {
+            throw new IllegalStateException("🚨 ERRO: Arquivo FXML não encontrado: " + fxmlPath + 
+                                            "\nVerifique a ortografia ou se o VS Code copiou o arquivo para a pasta de build (bin/).");
+        }
+
         try {
-            FXMLLoader loader = new FXMLLoader(SceneManager.class.getResource(fxmlPath));
+            FXMLLoader loader = new FXMLLoader(fxmlLocation);
 
             if (controllerFactory != null) 
             {
