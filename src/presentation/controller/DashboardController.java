@@ -1,29 +1,23 @@
 package presentation.controller;
 
 import domain.entity.User;
-import presentation.util.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class DashboardController {
+public class DashboardController 
+{
 
     @FXML
     private Label welcomeLabel;
 
     private final User loggedUser;
 
-    /**
-     * Injeção de Dependência via construtor.
-     * Recebe o usuário autenticado da tela anterior.
-     */
-    public DashboardController(User loggedUser) {
+    public DashboardController(User loggedUser) 
+    {
         this.loggedUser = loggedUser;
     }
 
-    /**
-     * Método chamado automaticamente pelo JavaFX após carregar o FXML.
-     */
     @FXML
     public void initialize() {
         if (loggedUser != null && loggedUser.getName() != null) {
@@ -32,7 +26,8 @@ public class DashboardController {
     }
 
     @FXML
-    public void handleLogout(ActionEvent event) {
+    public void handleLogout(ActionEvent event) 
+    {
         // Para o logout, retornamos à tela de login.
         // Como o LoginUseCase e repositórios são instanciados na Main, 
         // o ideal em uma arquitetura robusta é ter um AppContainer ou Factory central,
