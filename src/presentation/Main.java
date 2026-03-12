@@ -39,13 +39,11 @@ public class Main extends Application {
          SceneManager.changeScreen("/presentation/view/Login.fxml", Main::makeController);
     }
        
-    // ESSA É A "RECEITA" CENTRALIZADA: Agora qualquer tela sabe como criar as outras
+    // Agora qualquer tela sabe como criar as outras
     public static Object makeController(Class<?> controllerClass) {
         if (controllerClass == LoginController.class) {
             return new LoginController(loginUseCase);
         }
-        
-        // Se você adicionar outros controllers com injeção (ex: Finance), coloque aqui
         
         // Fallback para controllers simples
         try {

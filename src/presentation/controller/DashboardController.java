@@ -107,4 +107,5 @@ public class DashboardController
        welcomeLabel.setText("Bem-vindo(a), Administrador");
         loadView("/presentation/view/Home.fxml");
     }
+
 }
