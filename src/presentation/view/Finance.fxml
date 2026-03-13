@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="20.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.controller.FinanceController">
+   <children>
+      
+      <HBox spacing="20.0">
+         <children>
+            <VBox styleClass="card" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label text="Saldo Total" styleClass="card-subtitle" />
+                  <Label fx:id="saldoLabel" text="R$ 0,00" styleClass="card-value" />
+               </children>
+            </VBox>
+            <VBox styleClass="card" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label text="Entradas" styleClass="card-subtitle" />
+                  <Label fx:id="entradasLabel" text="R$ 0,00" styleClass="card-value-positive" />
+               </children>
+            </VBox>
+            <VBox styleClass="card" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label text="Saídas" styleClass="card-subtitle" />
+                  <Label fx:id="saidasLabel" text="R$ 0,00" styleClass="card-value-negative" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+
+      <VBox styleClass="card" VBox.vgrow="ALWAYS">
+         <children>
+            <Label styleClass="card-title" text="Histórico de Movimentações" />
+            <TableView fx:id="financeiroTable" prefHeight="400.0">
+              <columns>
+                <TableColumn fx:id="colData" text="Data" prefWidth="150.0" />
+                <TableColumn fx:id="colDescricao" text="Descrição" prefWidth="400.0" />
+                <TableColumn fx:id="colValor" text="Valor" prefWidth="150.0" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+      
+   </children>
+</VBox>
