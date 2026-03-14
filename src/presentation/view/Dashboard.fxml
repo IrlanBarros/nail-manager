@@ -41,13 +41,14 @@
    </left>
 
    <center>
-      <VBox fx:id="contentArea" spacing="20.0" BorderPane.alignment="CENTER">
-         <padding>
-            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
-         </padding>
-         <children>
-            <Label id="handleLogout" fx:id="welcomeLabel" styleClass="dashboard-header" text="Visão Geral" />
-            </children>
-      </VBox>
-   </center>
+   <VBox spacing="20.0" BorderPane.alignment="CENTER"> <padding>
+         <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+      </padding>
+      <children>
+         <Label fx:id="welcomeLabel" styleClass="dashboard-header" text="Visão Geral" />
+         
+         <VBox fx:id="contentArea" VBox.vgrow="ALWAYS" />
+      </children>
+   </VBox>
+</center>
 </BorderPane>
