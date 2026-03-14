@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="720.0" prefWidth="1280.0" styleClass="root" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.controller.DashboardController">
+<BorderPane prefHeight="720.0" prefWidth="1280.0" styleClass="root" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.controller.DashboardController">
    <stylesheets>
       <URL value="@../asset/css/global.css" />
       <URL value="@../asset/css/dashboard.css" />
@@ -21,9 +21,11 @@
                   <Insets bottom="30.0" left="20.0" top="20.0" />
                </VBox.margin>
             </Label>
-            <Button mnemonicParsing="false" styleClass="menu-button" text="Início" />
-            <Button mnemonicParsing="false" styleClass="menu-button" text="Agendamentos" />
-            <Button mnemonicParsing="false" styleClass="menu-button" text="Clientes" />
+            <Button mnemonicParsing="false" onAction="#goToHome" styleClass="menu-button" text="Início" />
+            <Button mnemonicParsing="false" onAction="#goToServices" styleClass="menu-button" text="Serviços" />
+            <Button mnemonicParsing="false" onAction="#goToCustomers" styleClass="menu-button" text="Clientes" />
+            <Button mnemonicParsing="false" onAction="#goToFinance" styleClass="menu-button" text="Financeiro" />
+            <Button mnemonicParsing="false" onAction="#goToReports" styleClass="menu-button" text="Relatório" />
             <VBox VBox.vgrow="ALWAYS" />
             <Button mnemonicParsing="false" onAction="#handleLogout" styleClass="logout-button" text="Sair">
                <VBox.margin>
@@ -31,17 +33,22 @@
                </VBox.margin>
             </Button>
          </children>
+         <stylesheets>
+            <URL value="@../asset/css/global.css" />
+            <URL value="@../asset/css/dashboard.css" />
+         </stylesheets>
       </VBox>
    </left>
 
    <center>
-      <VBox spacing="20.0" BorderPane.alignment="CENTER">
-         <padding>
-            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
-         </padding>
-         <children>
-            <Label fx:id="welcomeLabel" styleClass="dashboard-header" text="Visão Geral" />
-            </children>
-      </VBox>
-   </center>
+   <VBox spacing="20.0" BorderPane.alignment="CENTER"> <padding>
+         <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+      </padding>
+      <children>
+         <Label fx:id="welcomeLabel" styleClass="dashboard-header" text="Visão Geral" />
+         
+         <VBox fx:id="contentArea" VBox.vgrow="ALWAYS" />
+      </children>
+   </VBox>
+</center>
 </BorderPane>

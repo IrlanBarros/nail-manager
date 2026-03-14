@@ -13,11 +13,14 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    // Making the loginUseCase accessible for the Factory
+    private static LoginUseCase loginUseCase;
+
     @Override
     public void start(Stage primaryStage) throws Exception 
     {
         
-        primaryStage.setTitle("Sistema de Gestão - Nail Manager");
+        primaryStage.setTitle("Management System - Nail Manager");
         
         SceneManager.setStage(primaryStage);
 
@@ -28,25 +31,26 @@ public class Main extends Application {
         DatabaseSeeder seeder = new DatabaseSeeder(connectionFactory, passwordHasher);
         seeder.seed();
         
-        LoginUseCase loginUseCase = new LoginUseCase(userRepository, passwordHasher);
+        loginUseCase = new LoginUseCase(userRepository, passwordHasher);
 
-        // No seu Main.java, dentro do método start()
-        System.out.println("Caminho do Login: " + SceneManager.class.getResource("/presentation/view/Login.fxml"));
+        // In your Main.java, inside the start() method
+        System.out.println("Login Path: " + SceneManager.class.getResource("/presentation/view/Login.fxml"));
 
-        SceneManager.changeScreen("/presentation/view/Login.fxml", controllerClass -> {
-            
-            if (controllerClass == LoginController.class) 
-            {
-                return new LoginController(loginUseCase);
-            }
-
-            // Fallback for controllers that do not require dependencies
-            try {
-                return controllerClass.getDeclaredConstructor().newInstance();
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to instantiate controller: " + controllerClass, e);
-            }
-        });
+        SceneManager.changeScreen("/presentation/view/Login.fxml", Main::makeController);
+    }
+       
+    // Now any screen knows how to instantiate the others
+    public static Object makeController(Class<?> controllerClass) {
+        if (controllerClass == LoginController.class) {
+            return new LoginController(loginUseCase);
+        }
+        
+        // Fallback for simple controllers without dependencies
+        try {
+            return controllerClass.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to instantiate: " + controllerClass, e);
+        }
     }
 
     public static void main(String[] args) 
