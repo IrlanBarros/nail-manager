@@ -33,10 +33,6 @@
                </VBox.margin>
             </Button>
          </children>
-         <stylesheets>
-            <URL value="@../asset/css/global.css" />
-            <URL value="@../asset/css/dashboard.css" />
-         </stylesheets>
       </VBox>
    </left>
 
