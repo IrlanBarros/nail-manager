@@ -13,6 +13,9 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    // Tornamos o loginUseCase acessível para a Factory
+    private static LoginUseCase loginUseCase;
+
     @Override
     public void start(Stage primaryStage) throws Exception 
     {
@@ -28,25 +31,26 @@ public class Main extends Application {
         DatabaseSeeder seeder = new DatabaseSeeder(connectionFactory, passwordHasher);
         seeder.seed();
         
-        LoginUseCase loginUseCase = new LoginUseCase(userRepository, passwordHasher);
+        loginUseCase = new LoginUseCase(userRepository, passwordHasher);
 
         // No seu Main.java, dentro do método start()
         System.out.println("Caminho do Login: " + SceneManager.class.getResource("/presentation/view/Login.fxml"));
 
-        SceneManager.changeScreen("/presentation/view/Login.fxml", controllerClass -> {
-            
-            if (controllerClass == LoginController.class) 
-            {
-                return new LoginController(loginUseCase);
-            }
-
-            // Fallback for controllers that do not require dependencies
-            try {
-                return controllerClass.getDeclaredConstructor().newInstance();
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to instantiate controller: " + controllerClass, e);
-            }
-        });
+         SceneManager.changeScreen("/presentation/view/Login.fxml", Main::makeController);
+    }
+       
+    // Agora qualquer tela sabe como criar as outras
+    public static Object makeController(Class<?> controllerClass) {
+        if (controllerClass == LoginController.class) {
+            return new LoginController(loginUseCase);
+        }
+        
+        // Fallback para controllers simples
+        try {
+            return controllerClass.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException("Falha ao instanciar: " + controllerClass, e);
+        }
     }
 
     public static void main(String[] args) 
