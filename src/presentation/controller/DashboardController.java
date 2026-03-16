@@ -14,6 +14,10 @@ import presentation.Main;
 import presentation.util.SceneManager;
 import java.net.URL;
 
+import infrastructure.persistence.sqlite.SqliteTransactionRepository;
+import application.usecase.transaction.GetCashFlowUseCase;
+import domain.repository.TransactionRepositoryInterface;
+
 public class DashboardController 
 {
 
@@ -24,36 +28,25 @@ public class DashboardController
     private VBox contentArea;
 
     private void loadView(String fxmlPath) {
+    loadView(fxmlPath, null); // Apenas repassa para a versão B com null
+}
+
+    private void loadView(String fxmlPath, javafx.util.Callback<Class<?>, Object> factory) {
     try {
-        // Locates the file
-        URL url = getClass().getResource(fxmlPath);
-        if (url == null) {
-            System.err.println("FXML file not found: " + fxmlPath);
-            return;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+        if (factory != null) {
+            loader.setControllerFactory(factory);
         }
-
-        // Loads the new screen
-        FXMLLoader loader = new FXMLLoader(url);
-        Parent view = loader.load();
-
-        // Clears the content area BEFORE adding the new one
-        // setAll removes all old children at once
-        contentArea.getChildren().setAll(view);
-
-        // Makes the new screen fill the available space
-        VBox.setVgrow(view, Priority.ALWAYS);
         
-        if (view instanceof javafx.scene.layout.Region) {
-            ((javafx.scene.layout.Region) view).setMaxWidth(Double.MAX_VALUE);
-            ((javafx.scene.layout.Region) view).setMaxHeight(Double.MAX_VALUE);
-        }
-
-        System.out.println("Screen loaded successfully: " + fxmlPath);
-
+        Parent view = loader.load();
+        
+        // Em vez de mudar a cena inteira, muda só o miolo da Dashboard
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(view);
+        
     } catch (IOException e) {
-        System.err.println("FXML LOADING ERROR: " + fxmlPath);
-        // This will show if the error is due to FinanceRecord not being found
-        e.printStackTrace(); 
+        System.err.println("Erro ao carregar a sub-view: " + e.getMessage());
+        e.printStackTrace();
     }
 }
 
@@ -100,17 +93,44 @@ public class DashboardController
         
     }
 
-    @FXML
-    public void goToFinance(ActionEvent event) {
-        welcomeLabel.setText("Financeiro");
-        loadView("/presentation/view/Finance.fxml");
-    }
+   @FXML
+public void goToFinance(ActionEvent event) {
+    welcomeLabel.setText("Financeiro");
+
+    // Prepara a "receita"
+    var connectionFactory = new infrastructure.persistence.sqlite.SqliteConnectionFactory();
+    var repository = new SqliteTransactionRepository(connectionFactory);
+    var useCase = new GetCashFlowUseCase(repository);
+
+    // Chama o loadView passando a factory
+    loadView("/presentation/view/Finance.fxml", type -> {
+        if (type == FinanceController.class) {
+            return new FinanceController(useCase);
+        }
+        return null; 
+    });
+}
+
 
     @FXML
-    public void goToReports(ActionEvent event) {
-        welcomeLabel.setText("Relatórios");
-        loadView("/presentation/view/Reports.fxml");
-    }
+public void goToReports(ActionEvent event) {
+    welcomeLabel.setText("Relatórios");
+
+    // Reutilizamos a mesma estrutura de dependências
+    var factory = new infrastructure.persistence.sqlite.SqliteConnectionFactory();
+    var repository = new SqliteTransactionRepository(factory);
+    var useCase = new GetCashFlowUseCase(repository);
+
+    // Carregamos a nova view (certifique-se de que o arquivo existe)
+    loadView("/presentation/view/Reports.fxml", type -> {
+        if (type == ReportsController.class) {
+            return new ReportsController(useCase);
+        }
+        return null;
+    });
+}
+
+
 
     @FXML
     public void goToServices(ActionEvent event) {

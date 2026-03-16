@@ -1,83 +1,164 @@
 package presentation.controller;
-import presentation.controller.FinanceRecord;
 
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import domain.entity.Transaction;
+import domain.enums.TransactionType;
+import application.usecase.transaction.GetCashFlowUseCase;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import java.net.URL;
-import java.util.ResourceBundle;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label; // IMPORTANTE ADICIONAR
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
-public class FinanceController implements Initializable {
 
-    @FXML private TableView<FinanceRecord> tableFinance;
-    @FXML private TableColumn<FinanceRecord, String> colType;
-    @FXML private TableColumn<FinanceRecord, String> colData;
-    @FXML private TableColumn<FinanceRecord, String> colDescription;
-    @FXML private TableColumn<FinanceRecord, String> colOrigin;
-    @FXML private TableColumn<FinanceRecord, Double> colValue;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
-    @FXML private Label lblTotalBalance, lblTotalIncomes, lblTotalExpenses;
+public class FinanceController {
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        // 1. Bind columns to the FinanceRecord model
-        colType.setCellValueFactory(new PropertyValueFactory<>("type"));
-        colData.setCellValueFactory(new PropertyValueFactory<>("data"));
-        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
-        colOrigin.setCellValueFactory(new PropertyValueFactory<>("origin"));
-        colValue.setCellValueFactory(new PropertyValueFactory<>("value"));
+    @FXML
+    private TableView<Transaction> tableFinance;
 
-        // 2. Customize the "Type" column to show the colored circle
-        colType.setCellFactory(column -> new TableCell<FinanceRecord, String>() {
+    @FXML
+    private TableColumn<Transaction, String> colType;
+    @FXML
+    private TableColumn<Transaction, String> colData;
+    @FXML
+    private TableColumn<Transaction, String> colDescription;
+    @FXML
+    private TableColumn<Transaction, String> colOrigin;
+    @FXML
+    private TableColumn<Transaction, String> colValue;
+
+    // DECLARAÇÃO DOS LABELS (Verifique se os fx:id no FXML são esses)
+    @FXML
+    private Label lblTotalEntry;
+    @FXML
+    private Label lblTotalExpense;
+    @FXML
+    private Label lblTotal;
+
+    private final GetCashFlowUseCase getCashFlowUseCase;
+
+    
+
+    public FinanceController(GetCashFlowUseCase getCashFlowUseCase) {
+        this.getCashFlowUseCase = getCashFlowUseCase;
+    }
+
+    @FXML
+    public void initialize() {
+        configureTableColumns();
+        loadFinancialData();
+    }
+
+    private void configureTableColumns() {
+        // Tipo: Traduz e coloca cor
+        colType.setCellValueFactory(cellData -> {
+            TransactionType type = cellData.getValue().getType();
+            return new SimpleStringProperty(type.name().equals("INCOME") ? "ENTRADA" : "SAÍDA");
+        });
+
+        colType.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-
                 if (empty || item == null) {
-                    setGraphic(null);
                     setText(null);
+                    setStyle("");
                 } else {
-                    //  Create the circle 
-                    Circle circle = new Circle(5); 
-                    
-                    
-                    Label label = new Label(item);
-                    label.setStyle("-fx-font-weight: bold; -fx-text-fill: #2b2b2b;");
-
-                    // Define colors based on "E" or "S" value
-                    if (item.equals("E")) {
-                        circle.setFill(Color.web("#4CAF50")); 
+                    setText(item);
+                    if (item.equals("ENTRADA")) {
+                        setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
                     } else {
-                        circle.setFill(Color.web("#EF233C")); 
+                        setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
                     }
-
-                    //  Create the HBox to place the circle and letter side by side
-                    HBox container = new HBox(10); 
-                    container.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                    container.getChildren().addAll(circle, label);
-
-                  
-                    setGraphic(container);
-                    
-                   
-                    setStyle("-fx-alignment: CENTER_LEFT; -fx-padding: 0 0 0 10;");
                 }
             }
         });
 
-        // Dummy data according to your prototype
-        ObservableList<FinanceRecord> data = FXCollections.observableArrayList(
-            new FinanceRecord("E", "12/02", "Manicure Ana", "Atendimento", 35.00),
-            new FinanceRecord("S", "13/02", "Compra esmalte", "Manual", 120.00),
-            new FinanceRecord("E", "14/02", "Pedicure Maria", "Atendimento", 40.00)
+        // Data: Formato brasileiro
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        colData.setCellValueFactory(cellData -> 
+            new SimpleStringProperty(cellData.getValue().getDate().format(formatter))
         );
 
-        tableFinance.setItems(data);
+        // Descrição
+        colDescription.setCellValueFactory(cellData -> 
+            new SimpleStringProperty(cellData.getValue().getDescription().getValue())
+        );
+
+        // Origem
+        colOrigin.setCellValueFactory(cellData -> {
+            var appId = cellData.getValue().getAppointmentId();
+            return new SimpleStringProperty(appId.isPresent() ? String.valueOf(appId.get()) : "Avulso");
+        });
+
+        // Valor
+        colValue.setCellValueFactory(cellData -> 
+            new SimpleStringProperty(String.format("R$ %.2f", cellData.getValue().getAmount()))
+        );
     }
+
+    private void loadFinancialData() {
+    try {
+        LocalDateTime start = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0);
+        LocalDateTime end = LocalDateTime.now().with(java.time.temporal.TemporalAdjusters.lastDayOfMonth()).withHour(23).withMinute(59);
+
+        GetCashFlowUseCase.CashFlowReport report = getCashFlowUseCase.execute(start, end);
+        List<Transaction> transactions = report.getTransactions();
+        
+        tableFinance.setItems(FXCollections.observableArrayList(transactions));
+
+        // Inicializamos os somadores usando BigDecimal para precisão total
+        java.math.BigDecimal totalIn = java.math.BigDecimal.ZERO;
+        java.math.BigDecimal totalOut = java.math.BigDecimal.ZERO;
+
+        System.out.println("--- financial calculation ---");
+        for (Transaction t : transactions) {
+          
+            if (t.isActive()) {
+                if (t.getType().name().equals("INCOME")) {
+                    totalIn = totalIn.add(t.getAmount());
+                } else {
+                    totalOut = totalOut.add(t.getAmount());
+                }
+            } 
+        }
+
+        java.math.BigDecimal balance = totalIn.subtract(totalOut);
+
+        // Atualiza os labels com os valores EXATOS da soma acima
+        lblTotalEntry.setText(String.format("R$ %.2f", totalIn));
+        lblTotalExpense.setText(String.format("R$ %.2f", totalOut));
+        lblTotal.setText(String.format("R$ %.2f", balance));
+
+        System.out.println("RESULTS -> Entrys: " + totalIn + " | Expenses: " + totalOut + " | balance: " + balance);
+        System.out.println("------------------------");
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+
+
+public static class ClientRanking {
+    private final String name;
+    private final Double totalSpent;
+
+    public ClientRanking(String name, Double totalSpent) {
+        this.name = name;
+        this.totalSpent = totalSpent;
+    }
+
+    public String getName() { return name; }
+    public Double getTotalSpent() { return totalSpent; }
+}
+
+
+
 }

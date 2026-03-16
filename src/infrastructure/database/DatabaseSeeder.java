@@ -67,13 +67,13 @@ public class DatabaseSeeder
     {
         try (
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT count(*) AS total FROM clients")
+            ResultSet rs = stmt.executeQuery("SELECT count(*) AS total FROM customers")
         ) {
             if (rs.getInt("total") > 0) return;
         }
 
         // If the table is empty, insert the initial 10 customers
-        String sql = "INSERT INTO clients (name, phone, email) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO customers (name, phone, email) VALUES (?, ?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) 
         {
             
