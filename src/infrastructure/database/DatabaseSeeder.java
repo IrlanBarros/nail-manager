@@ -54,12 +54,12 @@ public class DatabaseSeeder
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) 
         {
             pstmt.setString(1, "Administrador");
-            pstmt.setString(2, "admin@manager.com");
+            pstmt.setString(2, "admin@manager.com.br");
 
             // Encrypt the password “admin123.”
             pstmt.setString(3, passwordHasher.hash("admin123")); 
             pstmt.executeUpdate();
-            System.out.println("✅ User admin@manager.com created.");
+            System.out.println("✅ User admin@manager.com.br created.");
         }
     }
 
@@ -67,13 +67,13 @@ public class DatabaseSeeder
     {
         try (
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT count(*) AS total FROM clients")
+            ResultSet rs = stmt.executeQuery("SELECT count(*) AS total FROM customers")
         ) {
             if (rs.getInt("total") > 0) return;
         }
 
         // If the table is empty, insert the initial 10 customers
-        String sql = "INSERT INTO clients (name, phone, email) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO customers (name, phone, email) VALUES (?, ?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) 
         {
             
@@ -112,12 +112,12 @@ public class DatabaseSeeder
                 {
                     "Manicure Clássica", 
                     "Cuidado essencial para as mãos: modelagem, cutícula, esfoliação leve e esmaltação com brilho duradouro.", 
-                    35.00
+                    45.00
                 },
                 {
                     "Pedicure Spa", 
                     "Tratamento relaxante: escalda-pés com sais, esfoliação profunda, máscara hidratante e massagem.", 
-                    45.00
+                    60.00
                 },
                 {
                     "Alongamento em Gel", 
@@ -164,11 +164,11 @@ public class DatabaseSeeder
 
             // Data: {customer_id, data, status, total_price, service_id}
             Object[][] dados = {
-                {1, agora.plusDays(1).withHour(10).format(formatter), "SCHEDULED", 45.0, 1},
-                {2, agora.plusDays(1).withHour(14).format(formatter), "SCHEDULED", 120.0, 3},
-                {3, agora.plusDays(2).withHour(9).format(formatter), "SCHEDULED", 60.0, 2},
-                {4, agora.plusDays(2).withHour(16).format(formatter), "SCHEDULED", 45.0, 1},
-                {5, agora.plusDays(3).withHour(11).format(formatter), "SCHEDULED", 120.0, 3}
+                {1, agora.withHour(10).toString(), "FINISHED", 45.0, 1},
+                {2, agora.withHour(14).toString(), "FINISHED", 120.0, 3},
+                {3, agora.withHour(9).toString(), "FINISHED", 60.0, 2},
+                {4, agora.withHour(16).toString(), "SCHEDULED", 45.0, 1},
+                {5, agora.withHour(11).toString(), "SCHEDULED", 120.0, 3}
             };
 
             for (Object[] d : dados) {
@@ -220,7 +220,7 @@ public class DatabaseSeeder
                 {"INCOME", 120.00, "Pagamento - Alongamento em Gel", 2, agora},
                 {"EXPENSE", 50.00, "Compra de material (Esmaltes)", null, agora}, // Transação avulsa/saída
                 {"INCOME", 60.00, "Pagamento - Pedicure Spa", 3, agora},
-                {"EXPENSE", 200.00, "Aluguel da sala", null, agora}             // Transação avulsa/saída
+                {"EXPENSE", 150.00, "Aluguel da sala", null, agora}             // Transação avulsa/saída
             };
 
             for (Object[] tr : transacoes) {

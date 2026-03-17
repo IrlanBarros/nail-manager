@@ -69,7 +69,8 @@ public class DatabaseConnection
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 customer_id INTEGER NOT NULL,
                 date_time TEXT NOT NULL, 
-                status TEXT NOT NULL, 
+                status TEXT NOT NULL,
+                description TEXT,
                 total_price REAL NOT NULL,
                 FOREIGN KEY (customer_id) REFERENCES customers(id)
             )

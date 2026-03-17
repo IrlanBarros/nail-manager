@@ -13,14 +13,15 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    // Tornamos o loginUseCase acessível para a Factory
+    // Making the loginUseCase accessible for the Factory
     private static LoginUseCase loginUseCase;
 
     @Override
     public void start(Stage primaryStage) throws Exception 
     {
+        infrastructure.persistence.sqlite.DatabaseConnection.initDatabase();
         
-        primaryStage.setTitle("Sistema de Gestão - Nail Manager");
+        primaryStage.setTitle("Management System - Nail Manager");
         
         SceneManager.setStage(primaryStage);
 
@@ -33,23 +34,23 @@ public class Main extends Application {
         
         loginUseCase = new LoginUseCase(userRepository, passwordHasher);
 
-        // No seu Main.java, dentro do método start()
-        System.out.println("Caminho do Login: " + SceneManager.class.getResource("/presentation/view/Login.fxml"));
+        // In your Main.java, inside the start() method
+        System.out.println("Login Path: " + SceneManager.class.getResource("/presentation/view/Login.fxml"));
 
-         SceneManager.changeScreen("/presentation/view/Login.fxml", Main::makeController);
+        SceneManager.changeScreen("/presentation/view/Login.fxml", Main::makeController);
     }
        
-    // Agora qualquer tela sabe como criar as outras
+    // Now any screen knows how to instantiate the others
     public static Object makeController(Class<?> controllerClass) {
         if (controllerClass == LoginController.class) {
             return new LoginController(loginUseCase);
         }
         
-        // Fallback para controllers simples
+        // Fallback for simple controllers without dependencies
         try {
             return controllerClass.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
-            throw new RuntimeException("Falha ao instanciar: " + controllerClass, e);
+            throw new RuntimeException("Failed to instantiate: " + controllerClass, e);
         }
     }
 

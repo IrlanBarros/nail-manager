@@ -1,0 +1,172 @@
+/* ==================================================
+   CONFIGURAÇÕES GERAIS (Dark Mode)
+   ================================================== */
+.root {
+    -fx-background-color: #151515; /* Fundo escuro principal */
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+/* ==================================================
+   BARRA LATERAL (Sidebar)
+   ================================================== */
+.sidebar {
+    -fx-background-color: #101010;
+    -fx-border-color: #333333;
+    -fx-border-width: 0 1 0 0; /* Linha sutil separando a sidebar do conteúdo */
+}
+
+.logo-text {
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 20 0;
+}
+
+/* Botões do Menu */
+.menu-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #aaaaaa;
+    -fx-font-size: 14px;
+    -fx-alignment: center-left;
+    -fx-padding: 10 15 10 15;
+    -fx-cursor: hand;
+}
+
+.menu-btn:hover {
+    -fx-text-fill: white;
+    -fx-background-color: #222222;
+    -fx-border-radius: 5px;
+}
+
+/* Botão do Menu Ativo (Estilo "Selecionado" do seu rascunho) */
+.menu-btn.active {
+    -fx-text-fill: white;
+    -fx-border-color: #555555;
+    -fx-border-radius: 5px;
+    -fx-font-weight: bold;
+}
+
+/* ==================================================
+   CONTEÚDO PRINCIPAL (Main)
+   ================================================== */
+.main-content {
+    -fx-background-color: #151515;
+}
+
+.page-title {
+    -fx-text-fill: white;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-pref-width: 10000; /* Força a centralização na HBox/VBox */
+}
+
+/* ==================================================
+   ABAS SUPERIORES (Agendamentos | Atendimentos)
+   ================================================== */
+.tab-container {
+    -fx-alignment: center;
+}
+
+.tab-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.tab-btn:hover {
+    -fx-text-fill: #80c4ff;
+}
+
+/* Aba Selecionada (Azul do seu rascunho) */
+.tab-btn.active-tab {
+    -fx-text-fill: #3ca0ff; 
+}
+
+.tab-separator {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* ==================================================
+   TABELAS (Listas)
+   ================================================== */
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: #555555;
+    -fx-border-radius: 5px;
+    -fx-padding: 5;
+}
+
+/* Fundo do cabeçalho da tabela */
+.table-view .column-header-background {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #555555 transparent;
+}
+
+/* Cada coluna do cabeçalho */
+.table-view .column-header, .table-view .filler {
+    -fx-background-color: transparent;
+    -fx-size: 45px; /* Altura do cabeçalho */
+}
+
+/* Texto do cabeçalho */
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+/* Linhas da tabela */
+.table-row-cell {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #2a2a2a transparent;
+    -fx-cell-size: 40px; /* Altura de cada linha */
+}
+
+/* Efeito Zebrado sutil nas linhas */
+.table-row-cell:odd {
+    -fx-background-color: #1a1a1a;
+}
+
+/* Cor quando clica/seleciona uma linha */
+.table-row-cell:selected {
+    -fx-background-color: #2a2a2a;
+}
+
+/* Texto dentro das células */
+.table-view .cell {
+    -fx-text-fill: #cccccc;
+    -fx-font-size: 13px;
+    -fx-alignment: center-left;
+}
+
+/* Oculta a barra de rolagem se não for necessária e ajusta sua cor */
+.table-view .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+.table-view .scroll-bar:vertical .thumb {
+    -fx-background-color: #333333;
+}
+
+/* ==================================================
+   BOTÕES DE AÇÃO INFERIORES
+   ================================================== */
+.action-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-border-color: #777777;
+    -fx-border-radius: 5px;
+    -fx-padding: 8 20 8 20;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.action-btn:hover {
+    -fx-background-color: #333333;
+    -fx-border-color: #aaaaaa;
+}
