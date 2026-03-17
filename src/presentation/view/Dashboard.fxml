@@ -22,8 +22,8 @@
                </VBox.margin>
             </Label>
             <Button mnemonicParsing="false" onAction="#goToHome" styleClass="menu-button" text="Início" />
-            <Button mnemonicParsing="false" onAction="#goToServices" styleClass="menu-button" text="Serviços" />
-            <Button mnemonicParsing="false" onAction="#goToCustomers" styleClass="menu-button" text="Clientes" />
+            <!-- <Button mnemonicParsing="false" onAction="#goToServices" styleClass="menu-button" text="Serviços" /> -->
+            <!-- <Button mnemonicParsing="false" onAction="#goToCustomers" styleClass="menu-button" text="Clientes" /> -->
             <Button mnemonicParsing="false" onAction="#goToFinance" styleClass="menu-button" text="Financeiro" />
             <Button mnemonicParsing="false" onAction="#goToReports" styleClass="menu-button" text="Relatório" />
             <VBox VBox.vgrow="ALWAYS" />

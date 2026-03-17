@@ -31,8 +31,14 @@ public class AppointmentMapper
         
         String statusString = rs.getString("status");
         AppointmentStatus status = AppointmentStatus.valueOf(statusString);
-        
-        Description description = new Description(rs.getString("description"));
+
+        String textDescricao = rs.getString("description");
+
+        // 2. Se o texto não for nulo nem vazio, instanciamos o Value Object. 
+        // Se for nulo, deixamos a variável do VO como null.
+        Description description = (textDescricao != null && !textDescricao.trim().isEmpty()) 
+                                ? new Description(textDescricao) 
+                                : null;
 
         BigDecimal totalPrice = rs.getBigDecimal("total_price");
 

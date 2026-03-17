@@ -5,7 +5,6 @@ import domain.enums.TransactionType;
 import application.usecase.transaction.GetCashFlowUseCase;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label; // IMPORTANTE ADICIONAR
 import javafx.scene.control.TableCell;

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+
+<VBox spacing="15.0" styleClass="form-container" stylesheets="@../style/home.css" 
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="presentation.controller.AppointmentFormController"
+      prefWidth="400.0">
+    
+    <padding>
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+    </padding>
+
+    <Label styleClass="page-title" text="New Appointment" />
+
+    <VBox spacing="5.0">
+        <Label text="Customer" style="-fx-text-fill: white;" />
+        <ComboBox fx:id="customerComboBox" maxWidth="Infinity" promptText="Select a customer" />
+    </VBox>
+
+    <VBox spacing="5.0">
+        <Label text="Services (Select one or more)" style="-fx-text-fill: white;" />
+        <ListView fx:id="servicesListView" prefHeight="100.0" />
+    </VBox>
+
+    <HBox spacing="10.0">
+        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+            <Label text="Date" style="-fx-text-fill: white;" />
+            <DatePicker fx:id="datePicker" maxWidth="Infinity" />
+        </VBox>
+        <VBox spacing="5.0">
+            <Label text="Time (HH:mm)" style="-fx-text-fill: white;" />
+            <TextField fx:id="timeField" prefWidth="100.0" promptText="14:30" />
+        </VBox>
+    </HBox>
+
+    <VBox spacing="5.0">
+        <Label text="Description" style="-fx-text-fill: white;" />
+        <TextField fx:id="descriptionField" promptText="Optional details..." />
+    </VBox>
+
+    <HBox spacing="15.0" alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
+        <Button onAction="#handleCancel" styleClass="action-btn" text="Cancel" />
+        <Button onAction="#handleSave" styleClass="action-btn" 
+                style="-fx-background-color: #3498db; -fx-border-color: #3498db;" text="Save Appointment" />
+    </HBox>
+
+</VBox>
