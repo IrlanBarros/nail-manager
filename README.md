@@ -38,6 +38,9 @@ Como os arquivos binários não estão no repositório, você deve baixá-los e 
     * Adicione-o também às **Referenced Libraries** no VS Code.
 * **Bibliotecas Nativas (`.so` / `.dll`):**
     * O JavaFX depende de binários nativos. O `.gitignore` está configurado para ignorar arquivos `*.so`, `*.dll` e `*.dylib`. Certifique-se de que o Java reconhece o caminho das bibliotecas nativas do seu SDK.
+*   **Apache PDFBox (Geração de Relatórios):**
+    *   Baixe o arquivo `.jar` do **PDFBox na versão 2.0.36**.
+    *   Certifique-se de adicionar também as dependências auxiliares `fontbox` e `commons-logging`, se necessário, às **Referenced Libraries**.
 
 ---
 
@@ -62,7 +65,7 @@ Para preparar o ambiente na primeira execução, você deve inicializar e popula
    * Em seguida, execute o arquivo principal da aplicação, `Main.java`.
    * **Caminho:** `src/presentation/Main.java`
    * **Ação:** Ao iniciar o sistema, a classe `DatabaseSeeder` será executada automaticamente, populando o banco de dados com as seguintes informações de teste para facilitar o desenvolvimento:
-       * **Usuário Admin:** `admin@salao.com` | **Senha:** `123456`
+       * **Usuário Admin:** `admin@manager.com` | **Senha:** `admin123`
        * **Conteúdo:** 10 Clientes, 3 Serviços, 5 Agendamentos e 5 Transações.
 
 ---
@@ -78,7 +81,7 @@ Mantenha a integridade da Clean Architecture ao criar novas funcionalidades:
     * `view/`: Arquivos `.fxml`.
     * `controller/`: Classes controladoras (Injetadas via SceneManager).
     * `asset/`: Arquivos estáticos (`.css`, imagens, etc).
-    * `asset/css/`: Arquivos `.css` modulares (ex: `login.css`, `dashboard.css`).
+    * `util/`: Classes de suporte técnico para a interface.
 
 ---
 
@@ -95,4 +98,4 @@ Mantenha a integridade da Clean Architecture ao criar novas funcionalidades:
 * **Importante:** Nunca remova as restrições do `.gitignore`. Arquivos `.db`, `.jar`, `.class` ou `.so` não devem ser commitados.
 * Faça o commit e abra um Pull Request para revisão.
 
-> Desenvolvido como parte do projeto de automação e arquitetura de software industrial.
+> Desenvolvido como parte do projeto de programação orientada a objetos ministrada por Luana Batista.
