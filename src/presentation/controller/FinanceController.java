@@ -5,60 +5,110 @@ import domain.enums.TransactionType;
 import application.usecase.transaction.GetCashFlowUseCase;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label; // IMPORTANTE ADICIONAR
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.util.Callback;
 
-
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 public class FinanceController {
 
-    @FXML
-    private TableView<Transaction> tableFinance;
+    @FXML private TableView<Transaction> tableFinance;
+    @FXML private TableColumn<Transaction, String> colType;
+    @FXML private TableColumn<Transaction, String> colData;
+    @FXML private TableColumn<Transaction, String> colDescription;
+    @FXML private TableColumn<Transaction, String> colOrigin;
+    @FXML private TableColumn<Transaction, String> colValue;
 
-    @FXML
-    private TableColumn<Transaction, String> colType;
-    @FXML
-    private TableColumn<Transaction, String> colData;
-    @FXML
-    private TableColumn<Transaction, String> colDescription;
-    @FXML
-    private TableColumn<Transaction, String> colOrigin;
-    @FXML
-    private TableColumn<Transaction, String> colValue;
+    @FXML private Label lblTotalEntry;
+    @FXML private Label lblTotalExpense;
+    @FXML private Label lblTotal;
 
-    // DECLARAÇÃO DOS LABELS (Verifique se os fx:id no FXML são esses)
-    @FXML
-    private Label lblTotalEntry;
-    @FXML
-    private Label lblTotalExpense;
-    @FXML
-    private Label lblTotal;
+    @FXML private ComboBox<String> comboPeriod;
+    @FXML private DatePicker dateStart;
+    @FXML private DatePicker dateEnd;
 
     private final GetCashFlowUseCase getCashFlowUseCase;
+    private final Callback<Class<?>, Object> controllerFactory;
 
-    
-
-    public FinanceController(GetCashFlowUseCase getCashFlowUseCase) {
+    public FinanceController(GetCashFlowUseCase getCashFlowUseCase, Callback<Class<?>, Object> controllerFactory) {
         this.getCashFlowUseCase = getCashFlowUseCase;
+        this.controllerFactory = controllerFactory;
     }
 
     @FXML
     public void initialize() {
         configureTableColumns();
-        loadFinancialData();
+        configureFilters();
+        handleFilter(null);
+    }
+
+    private void configureFilters() {
+        comboPeriod.setItems(FXCollections.observableArrayList("Mês Atual", "Mês Passado", "Últimos 7 dias", "Personalizado"));
+        comboPeriod.setValue("Mês Atual");
+        comboPeriod.setOnAction(e -> applySelectedFilter());
+        comboPeriod.getOnAction().handle(null);
+    }
+
+    private void applySelectedFilter() {
+        LocalDate now = LocalDate.now();
+        switch (comboPeriod.getValue()) {
+            case "Mês Atual":
+                dateStart.setValue(now.withDayOfMonth(1));
+                dateEnd.setValue(now.withDayOfMonth(now.lengthOfMonth()));
+                break;
+            case "Mês Passado":
+                LocalDate lastMonth = now.minusMonths(1);
+                dateStart.setValue(lastMonth.withDayOfMonth(1));
+                dateEnd.setValue(lastMonth.withDayOfMonth(lastMonth.lengthOfMonth()));
+                break;
+            case "Últimos 7 dias":
+                dateStart.setValue(now.minusDays(7));
+                dateEnd.setValue(now);
+                break;
+            case "Personalizado":
+                break;
+        }
+    }
+
+    @FXML
+    public void handleFilter(ActionEvent event) {
+        refreshData();
+    }
+
+    private void refreshData() {
+        if (dateStart.getValue() != null && dateEnd.getValue() != null) {
+            LocalDateTime start = dateStart.getValue().atStartOfDay();
+            LocalDateTime end = dateEnd.getValue().atTime(LocalTime.MAX);
+            loadFinancialData(start, end);
+        }
     }
 
     private void configureTableColumns() {
-        // Tipo: Traduz e coloca cor
+        setupTypeColumn();
+        setupDateColumn();
+        setupDescriptionColumn();
+        setupOriginColumn();
+        setupValueColumn();
+    }
+
+    private void setupTypeColumn() {
         colType.setCellValueFactory(cellData -> {
             TransactionType type = cellData.getValue().getType();
-            return new SimpleStringProperty(type.name().equals("INCOME") ? "ENTRADA" : "SAÍDA");
+            if (type == null) return new SimpleStringProperty("DESCONHECIDO");
+            return new SimpleStringProperty(type == TransactionType.INCOME ? "ENTRADA" : "SAÍDA");
         });
 
         colType.setCellFactory(column -> new TableCell<>() {
@@ -70,94 +120,107 @@ public class FinanceController {
                     setStyle("");
                 } else {
                     setText(item);
-                    if (item.equals("ENTRADA")) {
-                        setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
-                    } else {
-                        setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
-                    }
+                    setStyle(item.equals("ENTRADA") ? "-fx-text-fill: green; -fx-font-weight: bold;" : "-fx-text-fill: red; -fx-font-weight: bold;");
                 }
             }
         });
-
-        // Data: Formato brasileiro
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        colData.setCellValueFactory(cellData -> 
-            new SimpleStringProperty(cellData.getValue().getDate().format(formatter))
-        );
-
-        // Descrição
-        colDescription.setCellValueFactory(cellData -> 
-            new SimpleStringProperty(cellData.getValue().getDescription().getValue())
-        );
-
-        // Origem
-        colOrigin.setCellValueFactory(cellData -> {
-            var appId = cellData.getValue().getAppointmentId();
-            return new SimpleStringProperty(appId.isPresent() ? String.valueOf(appId.get()) : "Avulso");
-        });
-
-        // Valor
-        colValue.setCellValueFactory(cellData -> 
-            new SimpleStringProperty(String.format("R$ %.2f", cellData.getValue().getAmount()))
-        );
     }
 
-    private void loadFinancialData() {
-    try {
-        LocalDateTime start = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0);
-        LocalDateTime end = LocalDateTime.now().with(java.time.temporal.TemporalAdjusters.lastDayOfMonth()).withHour(23).withMinute(59);
+    private void setupDateColumn() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        colData.setCellValueFactory(cellData -> {
+            LocalDateTime date = cellData.getValue().getDate();
+            return new SimpleStringProperty(date != null ? date.format(formatter) : "Sem data");
+        });
+    }
 
-        GetCashFlowUseCase.CashFlowReport report = getCashFlowUseCase.execute(start, end);
-        List<Transaction> transactions = report.getTransactions();
-        
-        tableFinance.setItems(FXCollections.observableArrayList(transactions));
+    private void setupDescriptionColumn() {
+        colDescription.setCellValueFactory(cellData -> {
+            var desc = cellData.getValue().getDescription();
+            return new SimpleStringProperty((desc != null && desc.getValue() != null) ? desc.getValue() : "");
+        });
+    }
 
-        // Inicializamos os somadores usando BigDecimal para precisão total
-        java.math.BigDecimal totalIn = java.math.BigDecimal.ZERO;
-        java.math.BigDecimal totalOut = java.math.BigDecimal.ZERO;
-
-        System.out.println("--- financial calculation ---");
-        for (Transaction t : transactions) {
-          
-            if (t.isActive()) {
-                if (t.getType().name().equals("INCOME")) {
-                    totalIn = totalIn.add(t.getAmount());
-                } else {
-                    totalOut = totalOut.add(t.getAmount());
+    private void setupOriginColumn() {
+        colOrigin.setCellValueFactory(cellData -> {
+            try {
+                Object appId = cellData.getValue().getAppointmentId();
+                if (appId == null) return new SimpleStringProperty("Avulso");
+                
+                if (appId instanceof Optional) {
+                    Optional<?> opt = (Optional<?>) appId;
+                    return new SimpleStringProperty(opt.isPresent() ? String.valueOf(opt.get()) : "Avulso");
                 }
-            } 
+                return new SimpleStringProperty(String.valueOf(appId));
+            } catch (Exception e) {
+                return new SimpleStringProperty("Avulso");
+            }
+        });
+    }
+
+    private void setupValueColumn() {
+        colValue.setCellValueFactory(cellData -> {
+            BigDecimal amount = cellData.getValue().getAmount();
+            return new SimpleStringProperty(amount != null ? String.format("R$ %.2f", amount) : "R$ 0,00");
+        });
+    }
+
+    private void loadFinancialData(LocalDateTime start, LocalDateTime end) {
+        try {
+            GetCashFlowUseCase.CashFlowReport report = getCashFlowUseCase.execute(start, end);
+            List<Transaction> transactions = report.getTransactions();
+            tableFinance.setItems(FXCollections.observableArrayList(transactions));
+            calculateAndDisplayTotals(transactions);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void calculateAndDisplayTotals(List<Transaction> transactions) {
+        BigDecimal totalIn = BigDecimal.ZERO;
+        BigDecimal totalOut = BigDecimal.ZERO;
+
+        for (Transaction t : transactions) {
+            if (t == null || !t.isActive()) continue;
+            
+            BigDecimal amount = t.getAmount() != null ? t.getAmount() : BigDecimal.ZERO;
+
+            if (t.getType() == TransactionType.INCOME) {
+                totalIn = totalIn.add(amount);
+            } else {
+                totalOut = totalOut.add(amount);
+            }
         }
 
-        java.math.BigDecimal balance = totalIn.subtract(totalOut);
+        BigDecimal balance = totalIn.subtract(totalOut);
 
-        // Atualiza os labels com os valores EXATOS da soma acima
         lblTotalEntry.setText(String.format("R$ %.2f", totalIn));
         lblTotalExpense.setText(String.format("R$ %.2f", totalOut));
         lblTotal.setText(String.format("R$ %.2f", balance));
-
-        System.out.println("RESULTS -> Entrys: " + totalIn + " | Expenses: " + totalOut + " | balance: " + balance);
-        System.out.println("------------------------");
-
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-}
-
-
-
-public static class ClientRanking {
-    private final String name;
-    private final Double totalSpent;
-
-    public ClientRanking(String name, Double totalSpent) {
-        this.name = name;
-        this.totalSpent = totalSpent;
     }
 
-    public String getName() { return name; }
-    public Double getTotalSpent() { return totalSpent; }
-}
+    @FXML
+    public void handleNewTransaction(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentation/view/components/TransactionForm.fxml"));
+            loader.setControllerFactory(controllerFactory);
 
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Nova Transação");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            
+            if (tableFinance.getScene() != null && tableFinance.getScene().getWindow() != null) {
+                stage.initOwner(tableFinance.getScene().getWindow());
+            }
 
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.showAndWait();
 
+            refreshData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

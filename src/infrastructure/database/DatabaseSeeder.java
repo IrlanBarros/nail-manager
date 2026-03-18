@@ -54,12 +54,12 @@ public class DatabaseSeeder
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) 
         {
             pstmt.setString(1, "Administrador");
-            pstmt.setString(2, "admin@manager.com.br");
+            pstmt.setString(2, "admin@manager.com");
 
             // Encrypt the password “admin123.”
             pstmt.setString(3, passwordHasher.hash("admin123")); 
             pstmt.executeUpdate();
-            System.out.println("✅ User admin@manager.com.br created.");
+            System.out.println("✅ User admin@manager.com created.");
         }
     }
 
@@ -167,8 +167,13 @@ public class DatabaseSeeder
                 {1, agora.withHour(10).toString(), "FINISHED", 45.0, 1},
                 {2, agora.withHour(14).toString(), "FINISHED", 120.0, 3},
                 {3, agora.withHour(9).toString(), "FINISHED", 60.0, 2},
-                {4, agora.withHour(16).toString(), "SCHEDULED", 45.0, 1},
-                {5, agora.withHour(11).toString(), "SCHEDULED", 120.0, 3}
+                {4, agora.withHour(16).toString(), "CANCELLED", 45.0, 1},
+                {5, agora.withHour(11).toString(), "CANCELLED", 120.0, 3},
+                {10, agora.plusDays(3).withHour(11).toString(), "SCHEDULED", 120.0, 3},
+                {9, agora.plusDays(2).withHour(11).toString(), "SCHEDULED", 45.0, 1},
+                {8, agora.withHour(9).toString(), "IN_PROGRESS", 60.0, 2},
+                {7, agora.withHour(9).toString(), "IN_PROGRESS", 45.0, 1},
+                {6, agora.withHour(9).toString(), "IN_PROGRESS", 120.0, 3}
             };
 
             for (Object[] d : dados) {

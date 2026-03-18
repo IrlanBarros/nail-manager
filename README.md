@@ -13,6 +13,7 @@ Antes de começar, certifique-se de que seu ambiente possui:
 * **SQLite3** instalado no sistema.
 * **JavaFX 21.0.10** instalado de acordo com seu SO.
 * **VS Code** com o "Extension Pack for Java" instalado.
+* **Apache PDFBox** configurado no projeto (para exportação de relatórios em PDF).
 
 ---
 

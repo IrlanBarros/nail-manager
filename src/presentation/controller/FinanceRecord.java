@@ -1,7 +1,7 @@
 package presentation.controller;
 
 public class FinanceRecord {
-    private String type;      // "E" or "S"
+    private String type;     
     private String data;
     private String description;
     private String origin;
@@ -15,7 +15,6 @@ public class FinanceRecord {
         this.value = value;
     }
 
-    // Getters 
     public String getType() { return type; }
     public String getData() { return data; }
     public String getDescription() { return description; }

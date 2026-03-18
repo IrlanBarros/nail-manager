@@ -13,16 +13,13 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    // Making the loginUseCase accessible for the Factory
     private static LoginUseCase loginUseCase;
 
     @Override
-    public void start(Stage primaryStage) throws Exception 
-    {
+    public void start(Stage primaryStage) throws Exception {
         infrastructure.persistence.sqlite.DatabaseConnection.initDatabase();
         
-        primaryStage.setTitle("Management System - Nail Manager");
-        
+        primaryStage.setTitle("Sistema de Gestão - Nail Manager");
         SceneManager.setStage(primaryStage);
 
         SqliteConnectionFactory connectionFactory = new SqliteConnectionFactory();
@@ -34,19 +31,14 @@ public class Main extends Application {
         
         loginUseCase = new LoginUseCase(userRepository, passwordHasher);
 
-        // In your Main.java, inside the start() method
-        System.out.println("Login Path: " + SceneManager.class.getResource("/presentation/view/Login.fxml"));
-
         SceneManager.changeScreen("/presentation/view/Login.fxml", Main::makeController);
     }
        
-    // Now any screen knows how to instantiate the others
     public static Object makeController(Class<?> controllerClass) {
         if (controllerClass == LoginController.class) {
             return new LoginController(loginUseCase);
         }
         
-        // Fallback for simple controllers without dependencies
         try {
             return controllerClass.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
@@ -54,8 +46,7 @@ public class Main extends Application {
         }
     }
 
-    public static void main(String[] args) 
-    {
+    public static void main(String[] args) {
         launch(args);
     }
 }

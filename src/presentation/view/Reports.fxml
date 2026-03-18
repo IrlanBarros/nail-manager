@@ -4,65 +4,72 @@
 <?import javafx.scene.chart.*?>
 <?import javafx.geometry.Insets?>
 
-<ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: #f4f4f4;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.controller.ReportsController">
+<ScrollPane fitToWidth="true" styleClass="page-scroll-pane" stylesheets="@../asset/css/global.css, @../asset/css/layout.css"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="presentation.controller.ReportsController">
     <content>
-        <VBox spacing="25.0" style="-fx-padding: 30;">
+        <VBox fx:id="reportContainer" spacing="25.0" styleClass="page-content">
             <children>
                 <HBox spacing="15.0" alignment="CENTER_LEFT">
                     <children>
-                        <Label text="Período:" style="-fx-font-weight: bold; -fx-font-size: 14;" />
+                        <Label text="Período:" styleClass="filter-label" />
                         <ComboBox fx:id="comboPeriod" promptText="Mês Atual" prefWidth="150.0" />
                         <DatePicker fx:id="dateStart" promptText="Data Inicial" prefWidth="130.0" />
                         <DatePicker fx:id="dateEnd" promptText="Data Final" prefWidth="130.0" />
-                        <Button text="Filtrar" style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-cursor: hand;" />
+                        <Button text="Filtrar" onAction="#handleFilter" styleClass="filter-btn" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button text="📄 Exportar PDF" onAction="#handleExportPDF" styleClass="pdf-btn" />
                     </children>
                 </HBox>
 
                 <HBox spacing="20.0">
                     <children>
-                        <VBox style="-fx-background-color: #2B2D42; -fx-padding: 20; -fx-background-radius: 12;" HBox.hgrow="ALWAYS">
-                            <Label text="Faturamento" style="-fx-text-fill: white; -fx-font-size: 14;" />
-                            <Label fx:id="lblTotalRevenue" text="R$ 4.200,00" style="-fx-text-fill: #EF233C; -fx-font-size: 22; -fx-font-weight: bold;" />
+                        <VBox styleClass="card-panel" HBox.hgrow="ALWAYS">
+                            <Label text="Faturamento Total" styleClass="card-title" />
+                            <Label fx:id="lblTotalRevenue" text="R$ 0,00" styleClass="card-value-red" />
                         </VBox>
-                        <VBox style="-fx-background-color: #2B2D42; -fx-padding: 20; -fx-background-radius: 12;" HBox.hgrow="ALWAYS">
-                            <Label text="Ticket Médio" style="-fx-text-fill: white; -fx-font-size: 14;" />
-                            <Label fx:id="lblAverageTicket" text="R$ 37,50" style="-fx-text-fill: #EF233C; -fx-font-size: 22; -fx-font-weight: bold;" />
+                        <VBox styleClass="card-panel" HBox.hgrow="ALWAYS">
+                            <Label text="Ticket Médio" styleClass="card-title" />
+                            <Label fx:id="lblAverageTicket" text="R$ 0,00" styleClass="card-value-red" />
                         </VBox>
-                        <VBox style="-fx-background-color: #2B2D42; -fx-padding: 20; -fx-background-radius: 12;" HBox.hgrow="ALWAYS">
-                            <Label text="Total Clientes" style="-fx-text-fill: white; -fx-font-size: 14;" />
-                            <Label fx:id="lblTotalCustomers" text="112" style="-fx-text-fill: #EF233C; -fx-font-size: 22; -fx-font-weight: bold;" />
+                        <VBox styleClass="card-panel" HBox.hgrow="ALWAYS">
+                            <Label text="Atendimentos Realizados" styleClass="card-title" />
+                            <Label fx:id="lblTotalCustomers" text="0" styleClass="card-value-red" />
                         </VBox>
                     </children>
                 </HBox>
 
-                <VBox spacing="10.0" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10; -fx-border-color: #ddd; -fx-border-radius: 10;">
-                    <Label text="📈 Faturamento no Período" style="-fx-font-size: 16; -fx-font-weight: bold;" />
+                <VBox spacing="10.0" styleClass="chart-card">
+                    <Label text="📈 Faturamento no Período" styleClass="chart-title" />
                     <LineChart fx:id="chartRevenue" prefHeight="250.0" createSymbols="true">
                         <xAxis><CategoryAxis side="BOTTOM" /></xAxis>
                         <yAxis><NumberAxis side="LEFT" /></yAxis>
                     </LineChart>
                 </VBox>
 
-                <VBox spacing="10.0" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10; -fx-border-color: #ddd; -fx-border-radius: 10;">
-                    <Label text="🔥 Serviços Mais Realizados" style="-fx-font-size: 16; -fx-font-weight: bold;" />
-                    <BarChart fx:id="chartServices" prefHeight="250.0">
-                        <xAxis><CategoryAxis side="BOTTOM" /></xAxis>
-                        <yAxis><NumberAxis side="LEFT" /></yAxis>
-                    </BarChart>
-                </VBox>
+                <HBox spacing="20.0">
+                    <VBox spacing="10.0" styleClass="chart-card" HBox.hgrow="ALWAYS">
+                        <Label text="💰 Serviços Mais Rentáveis" styleClass="chart-title" />
+                        <BarChart fx:id="chartServices" prefHeight="250.0">
+                            <xAxis><CategoryAxis side="BOTTOM" /></xAxis>
+                            <yAxis><NumberAxis side="LEFT" /></yAxis>
+                        </BarChart>
+                    </VBox>
 
-                <VBox spacing="10.0">
-                    <Label text=" Serviços e valores faturados" style="-fx-font-size: 16; -fx-font-weight: bold;" />
-                    <TableView fx:id="tableTopClients" prefHeight="300.0" VBox.vgrow="NEVER">
-                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                     </columnResizePolicy>
-                        <columns>
-                          <TableColumn fx:id="colName" text="Serviço" />
-                          <TableColumn fx:id="colTotalSpent" text="Total faturado" />
-                        </columns>
-                   </TableView>
-                </VBox>
+                    <VBox spacing="10.0" styleClass="chart-card" HBox.hgrow="ALWAYS">
+                        <Label text="💰 Ranking de Faturamento" styleClass="chart-title" />
+                        <TableView fx:id="tableServiceRanking" prefHeight="250.0" VBox.vgrow="ALWAYS">
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                            </columnResizePolicy>
+                            <columns>
+                                <TableColumn fx:id="colName" text="Serviço" />
+                                <TableColumn fx:id="colQuantity" text="Qtd." prefWidth="50.0" maxWidth="80.0" />
+                                <TableColumn fx:id="colTotalSpent" text="Faturamento" />
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </HBox>
             </children>
         </VBox>
     </content>

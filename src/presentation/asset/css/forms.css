@@ -1,0 +1,9 @@
+.form-label {
+    -fx-text-fill: #1a1a1a;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.form-actions-container {
+    -fx-padding: 15px 0 0 0;
+}

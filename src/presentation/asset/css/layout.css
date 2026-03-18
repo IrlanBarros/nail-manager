@@ -1,0 +1,110 @@
+/* =========================================
+   ESTILOS PARA PAINEIS E CARDS (layout.css)
+========================================= */
+
+.page-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: #f4f4f4;
+}
+
+.page-content {
+    -fx-padding: 30px;
+}
+
+.filter-label {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+}
+
+.filter-btn {
+    -fx-background-color: #2b2b2b;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 8px 15px;
+    -fx-background-radius: 5px;
+}
+
+.filter-btn:hover {
+    -fx-background-color: #1a1a1a;
+}
+
+.pdf-btn {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 8px 15px;
+    -fx-background-radius: 5px;
+}
+
+.pdf-btn:hover {
+    -fx-background-color: #c0392b;
+}
+
+.card-panel {
+    -fx-background-color: #2B2D42;
+    -fx-padding: 20px;
+    -fx-background-radius: 12px;
+}
+
+.card-title {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-opacity: 0.8; 
+}
+
+.card-value {
+    -fx-text-fill: white;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.card-value-green {
+    -fx-text-fill: #4CAF50;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.card-value-red {
+    -fx-text-fill: #EF233C;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.chart-card {
+    -fx-background-color: white;
+    -fx-padding: 15px;
+    -fx-background-radius: 10px;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 10px;
+}
+
+.chart-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2B2D42;
+}
+
+.section-btn {
+    -fx-background-color: #dddddd;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-padding: 5px 15px;
+    -fx-background-radius: 5px;
+}
+
+.outline-dark-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2b2b2b;
+    -fx-border-color: #2b2b2b;
+    -fx-border-radius: 5px;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 15px;
+}
+
+.outline-dark-btn:hover {
+    -fx-background-color: #e0e0e0;
+}

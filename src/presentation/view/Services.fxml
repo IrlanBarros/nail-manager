@@ -1,10 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
 
-<VBox spacing="30.0" alignment="CENTER" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
-    <children>
-        <Label text="Tela de Serviços" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
-        
-    </children>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="20.0" styleClass="main-container" stylesheets="@../style/home.css" 
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="presentation.controller.ServiceController">
+    
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Serviços" styleClass="page-title" />
+
+    <HBox spacing="15.0" alignment="CENTER_LEFT">
+        <Button text="+ Novo serviço" onAction="#handleNewService" styleClass="action-btn" />
+    </HBox>
+
+    <TableView fx:id="serviceTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colName" prefWidth="200.0" text="Nome" />
+            <TableColumn fx:id="colPrice" prefWidth="120.0" text="Preço" />
+            <TableColumn fx:id="colStatus" prefWidth="120.0" text="Status" />
+            <TableColumn fx:id="colActions" prefWidth="120.0" text="Ações" />
+        </columns>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+        </columnResizePolicy>
+    </TableView>
 </VBox>

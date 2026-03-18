@@ -40,21 +40,26 @@ public class SqliteTransactionRepository implements TransactionRepositoryInterfa
             pstmt.setBigDecimal(2, transaction.getAmount());
             pstmt.setString(3, transaction.getDescription().getValue());
             
-            if (transaction.getAppointmentId().isPresent()) 
+            if (transaction.getAppointmentId() != null && transaction.getAppointmentId().isPresent()) 
             {
                 pstmt.setLong(4, transaction.getAppointmentId().get());
             } 
             else 
             {
-                pstmt.setNull(4, Types.INTEGER);
+                pstmt.setNull(4, Types.INTEGER); 
             }
 
-            pstmt.setString(5, transaction.getDate().toString());
+            if (transaction.getDate() != null) {
+                pstmt.setString(5, transaction.getDate().toString());
+            } else {
+                pstmt.setString(5, LocalDateTime.now().toString());
+            }
+            
             pstmt.setInt(6, transaction.isActive() ? 1 : 0);
             
-            if (transaction.getCanceledAt() != null) 
+            if (transaction.getCanceledAt() != null && transaction.getCanceledAt().isPresent()) 
             {
-                pstmt.setString(7, transaction.getCanceledAt().toString());
+                pstmt.setString(7, transaction.getCanceledAt().get().toString());
             } 
             else 
             {

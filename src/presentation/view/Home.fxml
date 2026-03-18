@@ -58,7 +58,7 @@
             </StackPane>
 
             <HBox spacing="15.0">
-                <!-- <Button onAction="#handleNewAppointment" styleClass="action-btn" text="+ Novo agendamento" /> -->
+                <Button onAction="#handleNewAppointment" styleClass="action-btn" text="+ Novo agendamento" />
                 <Button onAction="#handleRegisterAppointment" styleClass="action-btn" text="Registrar atendimento" />
             </HBox>
             

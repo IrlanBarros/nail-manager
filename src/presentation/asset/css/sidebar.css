@@ -1,0 +1,80 @@
+/* * Dashboard Styles
+ * Mantém consistência com as variáveis definidas no global.css
+ */
+
+/* =========================================
+   Barra Lateral (Sidebar)
+   ========================================= */
+.sidebar {
+    /* Utilizando a mesma cor primária da sidebar de branding do Login */
+    -fx-background-color: #2B2D42; 
+}
+
+.sidebar-title {
+    -fx-font-family: "System";
+    -fx-font-weight: bold;
+    -fx-font-size: 24px;
+    -fx-text-fill: white;
+}
+
+/* =========================================
+   Botões do Menu Lateral
+   ========================================= */
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #8D99AE; /* Cor secundária definida no global.css */
+    -fx-font-family: "System";
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-alignment: BASELINE_LEFT; /* Alinha o texto à esquerda */
+    -fx-padding: 15 20 15 30;     /* Espaçamento interno (Cima, Direita, Baixo, Esquerda) */
+    -fx-pref-width: 250px;
+    -fx-background-radius: 0;
+    -fx-cursor: hand;
+}
+
+/* Efeito Hover nos botões do menu */
+.menu-button:hover {
+    -fx-background-color: #3A3D5A; /* Um tom levemente mais claro que a cor primária */
+    -fx-text-fill: white;
+    -fx-border-color: transparent transparent transparent #EF233C; /* Borda vermelha à esquerda */
+    -fx-border-width: 0 0 0 4;
+}
+
+/* =========================================
+   Botão de Sair (Logout)
+   ========================================= */
+.logout-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #EF233C; /* Cor de destaque/erro */
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-text-fill: #EF233C;
+    -fx-font-family: "System";
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-pref-height: 40px;
+    -fx-pref-width: 210px; /* Largura ajustada para caber na sidebar com margens */
+    -fx-cursor: hand;
+}
+
+/* Hover do botão de sair inverte as cores (preenche de vermelho) */
+.logout-button:hover {
+    -fx-background-color: #EF233C;
+    -fx-text-fill: white;
+}
+
+/* =========================================
+   Área Principal (Conteúdo Central)
+   ========================================= */
+.dashboard-header {
+    -fx-font-family: "System";
+    -fx-font-weight: bold;
+    -fx-font-size: 32px;
+    -fx-text-fill: #2B2D42; /* Cor primária, mesmo estilo do .welcome-label do Login */
+}
+
+/* Garante que o fundo da área central receba a cor clara de background */
+.border-pane > .center {
+    -fx-background-color: #F4F6F8;
+}
