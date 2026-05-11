@@ -4,6 +4,9 @@ Bem-vindo ao projeto **Nail Manager**. Este sistema foi desenvolvido utilizando 
 
 Como este projeto não utiliza gerenciadores de dependências automáticos (como Maven ou Gradle) e as bibliotecas nativas estão no `.gitignore`, siga este guia para configurar seu ambiente de desenvolvimento.
 
+## 📸 Interface do sistema
+![Tela inicial do Nail Manager](src/presentation/asset/img/nail-manager.png)
+
 ---
 
 ## 🛠️ 1. Pré-requisitos do Sistema
@@ -82,6 +85,7 @@ Mantenha a integridade da Clean Architecture ao criar novas funcionalidades:
     * `controller/`: Classes controladoras (Injetadas via SceneManager).
     * `asset/`: Arquivos estáticos (`.css`, imagens, etc).
     * `util/`: Classes de suporte técnico para a interface.
+* `docs/`: Documentação completa do sistema e apresentação de slides do mesmo.
 
 ---
 
